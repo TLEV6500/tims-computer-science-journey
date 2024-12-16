@@ -12,12 +12,16 @@
 		"isolatedModules": true,
 		"moduleDetection": "force",
 		"noEmit": true,
+		"noResolve": false,
 
 		/* Linting */
 		"strict": true,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
-		"noFallthroughCasesInSwitch": true
+		"noFallthroughCasesInSwitch": true,
+
+		"forceConsistentCasingInFileNames": true,
+		"declaration": false
 	},
 	"include": ["src"]
 }

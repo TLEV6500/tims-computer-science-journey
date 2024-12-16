@@ -1,6 +1,6 @@
-import Counting from "../concepts/counting";
+import * as Counting from "../concepts/counting";
 
-export default function test() {
+export default function test(): void {
 	const uni: Counting.Procedure = [
 		["sections", 6],
 		["labs", 11],
