@@ -1,3 +1,3 @@
-export * from "./multiplicative";
-export * from "./additive";
+export * from "./MultiplicativePrinciple";
+export * from "./AdditivePrinciple";
 export * from "./types";
