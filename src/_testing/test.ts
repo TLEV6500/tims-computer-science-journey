@@ -1,4 +1,4 @@
-import * as Counting from "../concepts/counting";
+import * as Counting from "../concepts/discrete-math/counting";
 
 export default function test(): void {
 	const uni: Counting.Procedure = [
