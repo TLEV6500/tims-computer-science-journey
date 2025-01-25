@@ -1,7 +1,7 @@
 import { Procedure, isProcedure } from "./types";
 
-export class MultiplicationPrinciple {
-	static #instance: MultiplicationPrinciple;
+export class MultiplicativePrinciple {
+	static #instance: MultiplicativePrinciple;
 	#steps;
 	outcomes_n;
 
@@ -25,8 +25,8 @@ export class MultiplicationPrinciple {
 		numStates?: number
 	) {
 		if (isProcedure(steps_or_NumObjects)) {
-			if (!MultiplicationPrinciple.#instance)
-				MultiplicationPrinciple.#instance = new MultiplicationPrinciple(
+			if (!MultiplicativePrinciple.#instance)
+				MultiplicativePrinciple.#instance = new MultiplicativePrinciple(
 					steps_or_NumObjects
 				);
 			else this.#instance.steps = steps_or_NumObjects;

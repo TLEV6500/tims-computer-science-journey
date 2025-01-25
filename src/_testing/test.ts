@@ -6,9 +6,9 @@ export default function test(): void {
 		["labs", 11],
 		["problems", 12],
 	];
-	const res1 = Counting.MultiplicationPrinciple.totalNumberOfOutcomes(uni);
+	const res1 = Counting.MultiplicativePrinciple.totalNumberOfOutcomes(uni);
 	console.log(res1);
 
-	const res2 = Counting.MultiplicationPrinciple.totalNumberOfOutcomes(7, 2);
+	const res2 = Counting.MultiplicativePrinciple.totalNumberOfOutcomes(7, 2);
 	console.log(res2);
 }
