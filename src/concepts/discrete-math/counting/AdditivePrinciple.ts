@@ -3,8 +3,8 @@
  * -- from https://discrete.openmathbooks.org/dmoi3/sec_counting-addmult.html
  */
 
-import Collection from "../../utils/collection";
-import { MathElementType } from "../../utils/types";
+import Collection from "../../utils/collection.ts";
+import { MathElementType } from "../../utils/types.ts";
 
 export default class AdditivePrinciple<T extends MathElementType> {
 	static #instance: AdditivePrinciple<MathElementType>;

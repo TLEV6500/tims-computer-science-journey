@@ -1,4 +1,4 @@
-import { Procedure, isProcedure } from "./types";
+import { Procedure, isProcedure } from "./types.ts";
 
 export class MultiplicativePrinciple {
 	static #instance: MultiplicativePrinciple;
