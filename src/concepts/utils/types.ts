@@ -1,4 +1,4 @@
-import { Procedure } from "../counting";
+import { Procedure } from "../discrete-math/counting/index.ts";
 
 export type MathPrimitiveType = string | number;
 export type MathPrimitiveTypeName = "string" | "number";
@@ -61,3 +61,5 @@ export const isMathElementType = (val: any): val is MathElementType => {
 		return true;
 	return false;
 };
+
+export type RemoveFirstParameter<F> = F extends (x: any, ...args: infer P) => infer R ? (...args: P) => R : never;

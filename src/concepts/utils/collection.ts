@@ -5,7 +5,7 @@ import {
 	MathElementTypeName,
 	MathPrimitiveTypeName,
 	getCustomTypeName,
-} from "./types";
+} from "./types.ts";
 
 export default class Collection<T extends MathElementType> extends Set<T> {
 	#elementType: MathElementTypeName = "undefined";
@@ -13,7 +13,7 @@ export default class Collection<T extends MathElementType> extends Set<T> {
 		super();
 	}
 
-	add(value: T): this {
+	override add(value: T): this {
 		super.add(value);
 		if (isMathElementType(value)) {
 			if (isMathPrimitiveType(value))
