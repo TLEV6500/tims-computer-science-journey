@@ -13,9 +13,9 @@ export class Matrix<E extends number = number> implements RowOperations {
     #mtx: E[][];
     #maxDigits = 0;
 
-    constructor(readonly rowNum: number = 1, readonly colSize: number = 1) {
+    constructor(readonly rowNum: number = 1, readonly colNum: number = 1) {
         this.#mtx = new Array<E[]>(rowNum).fill(null as unknown as E[]);
-        this.#mtx.forEach((_v, i, r) => r[i] = new Array<E>(colSize).fill(0 as E));
+        this.#mtx.forEach((_v, i, r) => r[i] = new Array<E>(colNum).fill(0 as E));
     }
 
     fill(...values: E[]): void;
@@ -31,14 +31,14 @@ export class Matrix<E extends number = number> implements RowOperations {
         } else valProducer = firstValOrValProducer;
         if (values.length == 0) values.push(0 as E);
         for (let i = 1; i <= this.rowNum; ++i) {
-            for (let j = 1; j <= this.colSize; ++j) {
+            for (let j = 1; j <= this.colNum; ++j) {
                 this.setEntry(valProducer(i, j), i, j);
             }
         }
     }
 
     areInvalidPositions(row: number, col: number) {
-        return row < 1 || col < 1 || row > this.rowNum || col > this.colSize
+        return row < 1 || col < 1 || row > this.rowNum || col > this.colNum
     }
 
     getEntry(row: number, col: number) {
@@ -57,7 +57,7 @@ export class Matrix<E extends number = number> implements RowOperations {
     }
     setRow(row: E[], rowNum: number) {
         if (this.areInvalidPositions(rowNum, 1)) throw new Error("Invalid Row Number");
-        if (row.length != this.rowNum) throw new Error(`New row size (${row.length}) does not equal matrix row size (${this.rowNum}).`);
+        if (row.length != this.colNum) throw new Error(`New row size (${row.length}) does not equal matrix row size (${this.rowNum}).`);
         this.#mtx[rowNum - 1] = row;
     }
 
@@ -75,7 +75,7 @@ export class Matrix<E extends number = number> implements RowOperations {
 
     toString() {
         let str = "\n";
-        const r = this.rowNum, c = this.colSize;
+        const r = this.rowNum, c = this.colNum;
         for (let i = 1, j = 1; i <= r; ++i) {
             if (this.rowNum == 1) str += "[ ";
             else if (i == 1) str += "┌ ";
@@ -105,13 +105,13 @@ export class Matrix<E extends number = number> implements RowOperations {
     }
 
     static isCol: MatrixTypeGuard = (mtx: Matrix) => {
-        return mtx.colSize == 1;
+        return mtx.colNum == 1;
     }
     static isRectangular: MatrixTypeGuard = (mtx: Matrix) => {
         throw new Error("Has not yet been implemented!");
     }
     static isSquare: MatrixTypeGuard = (mtx: Matrix) => {
-        return mtx.rowNum == mtx.colSize;
+        return mtx.rowNum == mtx.colNum;
     }
     static isIdentity: MatrixTypeGuard = (mtx: Matrix) => {
         if (!this.isSquare(mtx)) return false;
