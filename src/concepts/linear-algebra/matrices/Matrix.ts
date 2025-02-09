@@ -7,18 +7,38 @@ type RowOperations = {
     [Key in keyof ElementaryMatrixRowOperations]: RemoveFirstParameter<ElementaryMatrixRowOperations[Key]>;
 }
 
+type MatrixEntryProducer<E extends number> = (r: number, c: number) => E;
+
 export class Matrix<E extends number = number> implements RowOperations {
     #mtx: E[][];
     #maxDigits = 0;
 
-    constructor(readonly rowSize: number = 1, readonly colSize: number = 1) {
-        this.#mtx = new Array<E[]>(rowSize).fill(null as unknown as E[]);
-        this.#mtx.forEach((_v, i, r) => (r[i] = new Array<E>(colSize).fill(0 as E))
-        );
+    constructor(readonly rowNum: number = 1, readonly colSize: number = 1) {
+        this.#mtx = new Array<E[]>(rowNum).fill(null as unknown as E[]);
+        this.#mtx.forEach((_v, i, r) => r[i] = new Array<E>(colSize).fill(0 as E));
+    }
+
+    fill(...values: E[]): void;
+    fill(valProducer: MatrixEntryProducer<E>): void;
+    fill(firstValOrValProducer: E | MatrixEntryProducer<E>, ...values: E[]) {
+        let valProducer: MatrixEntryProducer<E>;
+        if (!(firstValOrValProducer instanceof Function)) {
+            values.unshift(firstValOrValProducer);
+            valProducer = (r, c) => {
+                const ii = c + this.rowNum * (r - 1) - 1;
+                return values[values.length - 1 < ii ? (values.length - 1) : ii]
+            }
+        } else valProducer = firstValOrValProducer;
+        if (values.length == 0) values.push(0 as E);
+        for (let i = 1; i <= this.rowNum; ++i) {
+            for (let j = 1; j <= this.colSize; ++j) {
+                this.setEntry(valProducer(i, j), i, j);
+            }
+        }
     }
 
     areInvalidPositions(row: number, col: number) {
-        return row < 1 || col < 1 || row > this.rowSize || col > this.colSize
+        return row < 1 || col < 1 || row > this.rowNum || col > this.colSize
     }
 
     getEntry(row: number, col: number) {
@@ -37,41 +57,51 @@ export class Matrix<E extends number = number> implements RowOperations {
     }
     setRow(row: E[], rowNum: number) {
         if (this.areInvalidPositions(rowNum, 1)) throw new Error("Invalid Row Number");
-        if (row.length != this.rowSize) throw new Error(`New row size (${row.length}) does not equal matrix row size (${this.rowSize}).`);
+        if (row.length != this.rowNum) throw new Error(`New row size (${row.length}) does not equal matrix row size (${this.rowNum}).`);
         this.#mtx[rowNum - 1] = row;
     }
 
-    swap(rowA: number, rowB: number): void {
-        ElementaryMatrixRowOperations.swap(this, rowA, rowB);
+    swap(...args: Parameters<RowOperations["swap"]>): void {
+        ElementaryMatrixRowOperations.swap(this, ...args);
     }
 
-    scalarMultiply(row: number, scalar: number): void {
-        ElementaryMatrixRowOperations.scalarMultiply(this, row, scalar)
+    scalarMultiply(...args: Parameters<RowOperations["scalarMultiply"]>): void {
+        ElementaryMatrixRowOperations.scalarMultiply(this, ...args);
     }
 
-    rowSum(rowA: number, rowB: number, storeResultTo: "rowA" | "rowB"): void {
-        ElementaryMatrixRowOperations.rowSum(this, rowA, rowB, storeResultTo);
+    rowSum(...args: Parameters<RowOperations["rowSum"]>): void {
+        ElementaryMatrixRowOperations.rowSum(this, ...args);
     }
 
     toString() {
-        let str = "";
-        const r = this.rowSize, c = this.colSize;
+        let str = "\n";
+        const r = this.rowNum, c = this.colSize;
         for (let i = 1, j = 1; i <= r; ++i) {
-            if (i == 1) str += "┌ ";
+            if (this.rowNum == 1) str += "[ ";
+            else if (i == 1) str += "┌ ";
             else if (i != r) str += "\n│ ";
             else str += "\n└ ";
             for (j = 1; j <= c; ++j) {
-                str += (this.getEntry(i, j) ?? 0).toString().padEnd(j == c ? 0 : this.#maxDigits, " ") + " ";
+                str += (this.getEntry(i, j) ?? 0).toString().padEnd(this.#maxDigits, " ") + " ";
             }
-            if (i == 1) str += "┐ "
+            if (this.rowNum == 1) str += "]";
+            else if (i == 1) str += "┐"
             else if (i != r) str += "│";
-            else if (i == r) str += "┘ ";
+            else if (i == r) str += "┘";
         }
-        return str;
+        return str + "\n";
+    }
+
+    toArray() {
+        return JSON.parse(JSON.stringify(this.#mtx)) as E[][];
+    }
+
+    print() {
+        console.log(this.toString());
     }
 
     static isRow: MatrixTypeGuard = (mtx: Matrix) => {
-        return mtx.rowSize == 1;
+        return mtx.rowNum == 1;
     }
 
     static isCol: MatrixTypeGuard = (mtx: Matrix) => {
@@ -81,7 +111,7 @@ export class Matrix<E extends number = number> implements RowOperations {
         throw new Error("Has not yet been implemented!");
     }
     static isSquare: MatrixTypeGuard = (mtx: Matrix) => {
-        return mtx.rowSize == mtx.colSize;
+        return mtx.rowNum == mtx.colSize;
     }
     static isIdentity: MatrixTypeGuard = (mtx: Matrix) => {
         if (!this.isSquare(mtx)) return false;
