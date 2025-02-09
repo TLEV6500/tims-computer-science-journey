@@ -1,3 +1,5 @@
+
+// TODO: refactor to accept multiple positions for tables and matrices
 export default class InvalidPositionException extends Error {
     constructor(pos: number, size: number) {
         super(`Out of bounds. Accessed ${pos} when range is only from 1 to ${size}`);

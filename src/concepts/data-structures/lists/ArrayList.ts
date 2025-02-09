@@ -1,4 +1,4 @@
-import InvalidPositionException from "../exceptions/InvalidPositionException.ts";
+import InvalidPositionException from "../../programming/exceptions/InvalidPositionException.ts";
 import List from "./List.ts";
 
 export default class ArrayList<E extends Object> implements List<E> {
