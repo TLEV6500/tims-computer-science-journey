@@ -30,7 +30,7 @@ export default class Parser {
     }
 
     nextInt() {
-        return Math.trunc((() => { const x = this.nextNumber(); console.log(x); return x })());
+        return Math.trunc(this.nextNumber());
     }
 
     getAllNumbers() {
