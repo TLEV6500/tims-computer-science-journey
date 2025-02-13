@@ -1,7 +1,7 @@
 import InvalidPositionException from "../../programming/exceptions/InvalidPositionException.ts";
 import List from "./List.ts";
 
-export default class ArrayList<E extends Object> implements List<E> {
+export default class ArrayList<E extends { toString(): string }> implements List<E> {
     #array: E[];
 
     constructor() {
@@ -13,7 +13,7 @@ export default class ArrayList<E extends Object> implements List<E> {
     }
 
     get(pos: number): E {
-        InvalidPositionException.throwIfNecessary(pos, this.size);
+        InvalidPositionException.throwIfNecessary([pos], [this.size]);
         return this.#array[pos - 1];
     }
 
@@ -36,14 +36,14 @@ export default class ArrayList<E extends Object> implements List<E> {
     }
 
     addAt(elem: E, pos: number): void {
-        InvalidPositionException.throwIfNecessary(pos, this.size + 1);
+        InvalidPositionException.throwIfNecessary([pos], [this.size + 1]);
         if (pos == this.size + 1) return this.insert(elem);
         const right = this.#array.splice(pos - 1, this.size - pos + 1, elem);
         this.#array = this.#array.concat(right);
     }
 
     removeAt(pos: number): E {
-        InvalidPositionException.throwIfNecessary(pos, this.size);
+        InvalidPositionException.throwIfNecessary([pos], [this.size]);
         let removed: unknown;
         this.#array = this.#array.filter((e, i) => i != pos - 1 || (removed = e, false))
         return removed as E;

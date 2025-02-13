@@ -1,8 +1,7 @@
 
-// TODO: refactor to accept multiple positions for tables and matrices
 export default class InvalidPositionException extends Error {
     constructor(pos: number, size: number) {
-        super(`Out of bounds. Accessed ${pos} when range is only from 1 to ${size}`);
+        super(`Position ${pos} is not in the range 1 to ${size}`);
         super.name = "InvalidPositionException";
     }
 
@@ -12,7 +11,8 @@ export default class InvalidPositionException extends Error {
      * @param max max position allowed
      * @throws InvalidPositionException
      */
-    static throwIfNecessary(pos: number, max: number) {
-        if (pos < 1 || pos > max) throw new InvalidPositionException(pos, max);
+    static throwIfNecessary(pos: number[], max: number[]) {
+        const i = pos.findIndex((p, i) => p < 1 || p > max[i]);
+        if (i != -1) throw new InvalidPositionException(pos[i], max[i]);
     }
 }

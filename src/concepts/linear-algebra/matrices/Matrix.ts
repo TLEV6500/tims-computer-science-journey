@@ -10,12 +10,12 @@ type RowOperations = {
 type MatrixEntryProducer<E extends number> = (r: number, c: number) => E;
 
 export class Matrix<E extends number = number> implements RowOperations {
-    #mtx: E[][];
+    protected mtx: E[][];
     #maxDigits = 0;
 
     constructor(readonly rowNum: number = 1, readonly colNum: number = 1) {
-        this.#mtx = new Array<E[]>(rowNum).fill(null as unknown as E[]);
-        this.#mtx.forEach((_v, i, r) => r[i] = new Array<E>(colNum).fill(0 as E));
+        this.mtx = new Array<E[]>(rowNum).fill(null as unknown as E[]);
+        this.mtx.forEach((_v, i, r) => r[i] = new Array<E>(colNum).fill(0 as E));
     }
 
     fill(...values: E[]): void;
@@ -43,22 +43,22 @@ export class Matrix<E extends number = number> implements RowOperations {
 
     getEntry(row: number, col: number) {
         if (this.areInvalidPositions(row, col)) throw new Error(`Invalid Positions: (${row},${col})`);
-        return this.#mtx[row - 1][col - 1];
+        return this.mtx[row - 1][col - 1];
     }
     setEntry(elem: E, row: number, col: number) {
         if (this.areInvalidPositions(row, col)) throw new Error(`Invalid Positions: (${row},${col})`);
-        this.#mtx[row - 1][col - 1] = elem;
+        this.mtx[row - 1][col - 1] = elem;
         const l = elem.toString().length;
         if (l > this.#maxDigits) this.#maxDigits = l;
     }
     getRow(row: number) {
         if (this.areInvalidPositions(row, 1)) throw new Error("Invalid Row Number " + row);
-        return this.#mtx[row - 1];
+        return this.mtx[row - 1];
     }
     setRow(row: E[], rowNum: number) {
         if (this.areInvalidPositions(rowNum, 1)) throw new Error("Invalid Row Number");
         if (row.length != this.colNum) throw new Error(`New row size (${row.length}) does not equal matrix row size (${this.rowNum}).`);
-        this.#mtx[rowNum - 1] = row;
+        this.mtx[rowNum - 1] = row;
     }
 
     swap(...args: Parameters<RowOperations["swap"]>): void {
@@ -93,7 +93,7 @@ export class Matrix<E extends number = number> implements RowOperations {
     }
 
     toArray() {
-        return JSON.parse(JSON.stringify(this.#mtx)) as E[][];
+        return JSON.parse(JSON.stringify(this.mtx)) as E[][];
     }
 
     print() {
@@ -115,13 +115,13 @@ export class Matrix<E extends number = number> implements RowOperations {
     }
     static isIdentity: MatrixTypeGuard = (mtx: Matrix) => {
         if (!this.isSquare(mtx)) return false;
-        for (const row of mtx.#mtx) {
+        for (const row of mtx.mtx) {
             if (row.reduce((y, x) => y + x) != 1) return false;
         }
         return true;
     }
     static isZero: MatrixTypeGuard = (mtx: Matrix) => {
-        for (const row of mtx.#mtx) {
+        for (const row of mtx.mtx) {
             if (row.reduce((y, x) => y + x) != 0) return false;
         }
         return true;
