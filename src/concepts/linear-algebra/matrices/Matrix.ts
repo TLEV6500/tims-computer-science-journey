@@ -1,4 +1,5 @@
 import { RemoveFirstParameter } from "../../utils/types.ts";
+import Determinant from "./Determinant.ts";
 import { ElementaryMatrixRowOperations } from "./ElementaryMatrixRowOperations.ts";
 
 type MatrixTypeGuard = (mtx: Matrix) => boolean;
@@ -8,14 +9,44 @@ type RowOperations = {
 }
 
 type MatrixEntryProducer<E extends number> = (r: number, c: number) => E;
+type RandomMatrixOptions = {
+    matrixSize: { min: number, max: number, isSquare: boolean },
+    entries: { min: number, max: number, decimals: number }
+};
 
 export class Matrix<E extends number = number> implements RowOperations {
     protected mtx: E[][];
     #maxDigits = 0;
+    // #paddingPerColumn: number[] = [];
+    readonly rowNum: number;
+    readonly colNum: number;
 
-    constructor(readonly rowNum: number = 1, readonly colNum: number = 1) {
-        this.mtx = new Array<E[]>(rowNum).fill(null as unknown as E[]);
-        this.mtx.forEach((_v, i, r) => r[i] = new Array<E>(colNum).fill(0 as E));
+    constructor(rowNum: number, colNum: number);
+    constructor(randomIndicator: "RANDOM", randomOptions: RandomMatrixOptions);
+    constructor(rowNumOrRandomIndicator: number | "RANDOM" = 1, colNumOrRandOpts: number | RandomMatrixOptions = 1) {
+        if (typeof rowNumOrRandomIndicator == 'string' && typeof colNumOrRandOpts == 'object') {
+            if (colNumOrRandOpts.matrixSize.max <= colNumOrRandOpts.matrixSize.min) this.rowNum = this.colNum = colNumOrRandOpts.matrixSize.min;
+            else if (colNumOrRandOpts.matrixSize.isSquare) this.rowNum = this.colNum = Math.trunc(Math.random() * (colNumOrRandOpts.matrixSize.max + 1)) || colNumOrRandOpts.matrixSize.min;
+            else {
+                this.rowNum = Math.trunc(Math.random() * (colNumOrRandOpts.matrixSize.max + 1)) || colNumOrRandOpts.matrixSize.min;
+                this.colNum = Math.trunc(Math.random() * (colNumOrRandOpts.matrixSize.max + 1)) || colNumOrRandOpts.matrixSize.min;
+            }
+            this.mtx = new Array<E[]>(this.rowNum);
+            for (let i = 0, j; i < this.rowNum; ++i) {
+                this.mtx[i] = [];
+                for (j = 0; j < this.colNum; ++j) {
+                    const n = (Number((Math.random() * colNumOrRandOpts.entries.max).toFixed(colNumOrRandOpts.entries.decimals)) + colNumOrRandOpts.entries.min) as E;
+                    // console.log(n);
+                    this.setEntry(n, i + 1, j + 1);
+                }
+            }
+        }
+        else {
+            this.rowNum = rowNumOrRandomIndicator as number;
+            this.colNum = colNumOrRandOpts as number;
+            this.mtx = new Array<E[]>(this.rowNum).fill(null as unknown as E[]);
+            this.mtx.forEach((_v, i, r) => r[i] = new Array<E>(colNumOrRandOpts as number).fill(0 as E));
+        }
     }
 
     fill(...values: E[]): void;
@@ -98,6 +129,33 @@ export class Matrix<E extends number = number> implements RowOperations {
 
     print() {
         console.log(this.toString());
+    }
+
+    submatrix(deleteRow: number, deleteCol: number): Matrix {
+        const sub = new Matrix(this.rowNum - 1, this.colNum - 1);
+        let i1, i2, j1, j2;
+        for (i1 = i2 = j1 = j2 = 1; i1 <= this.rowNum; ++i1) {
+            if (i1 != deleteRow) {
+                for (j1 = 1, j2 = 1; j1 <= this.colNum; ++j1) {
+                    if (j1 != deleteCol) {
+                        sub.setEntry(this.getEntry(i1, j1), i2, j2);
+                        ++j2;
+                    }
+                }
+                ++i2
+            }
+        }
+        return sub;
+    }
+
+    matrixOfMinors() {
+        const mtxMin = new Matrix(this.rowNum, this.colNum);
+        for (let i = 1, j; i <= this.rowNum; ++i) {
+            for (j = 1; j <= this.colNum; ++j) {
+                mtxMin.setEntry(Determinant.minor(this, i, j), i, j)
+            }
+        }
+        return mtxMin;
     }
 
     static isRow: MatrixTypeGuard = (mtx: Matrix) => {
