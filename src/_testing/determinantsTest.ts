@@ -1,4 +1,4 @@
-import Determinant from "../concepts/linear-algebra/matrices/Determinant.ts";
+import Determinant from "../concepts/linear-algebra/matrices/operations/Determinant.ts";
 import { Matrix } from "../concepts/linear-algebra/matrices/Matrix.ts";
 
 export default function () {

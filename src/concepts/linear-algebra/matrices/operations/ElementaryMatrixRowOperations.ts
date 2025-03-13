@@ -1,6 +1,6 @@
-import { Matrix } from "./Matrix.ts";
-import Parser from "../../utils/Parser.ts";
-import { isNo, isYes } from "../../utils/validateStrings.ts";
+import { Matrix } from "../types/Matrix.ts";
+import Parser from "../../../utils/Parser.ts";
+import { isNo, isYes } from "../../../utils/validateStrings.ts";
 
 const menu = "\nElementary Row Operations".concat(
     "\n's' - Swap two rows",

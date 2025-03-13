@@ -1,4 +1,4 @@
-import { Matrix } from "./Matrix.ts";
+import { Matrix } from "../types/Matrix.ts";
 
 export default class Determinant {
     static of2x2Mtx(mtx: Matrix) {

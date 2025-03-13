@@ -1,6 +1,6 @@
-import { RemoveFirstParameter } from "../../utils/types.ts";
-import Determinant from "./Determinant.ts";
-import { ElementaryMatrixRowOperations } from "./ElementaryMatrixRowOperations.ts";
+import { RemoveFirstParameter } from "../../../utils/types.ts";
+import Determinant from "../operations/Determinant.ts";
+import { ElementaryMatrixRowOperations } from "../operations/ElementaryMatrixRowOperations.ts";
 
 type MatrixTypeGuard = (mtx: Matrix) => boolean;
 
@@ -158,6 +158,10 @@ export class Matrix<E extends number = number> implements RowOperations {
         return mtxMin;
     }
 
+    static isSingleton: MatrixTypeGuard = (mtx: Matrix) => {
+        return this.isRow(mtx) && this.isCol(mtx);
+    }
+
     static isRow: MatrixTypeGuard = (mtx: Matrix) => {
         return mtx.rowNum == 1;
     }
@@ -166,7 +170,7 @@ export class Matrix<E extends number = number> implements RowOperations {
         return mtx.colNum == 1;
     }
     static isRectangular: MatrixTypeGuard = (mtx: Matrix) => {
-        throw new Error("Has not yet been implemented!");
+        return mtx.rowNum != mtx.colNum;
     }
     static isSquare: MatrixTypeGuard = (mtx: Matrix) => {
         return mtx.rowNum == mtx.colNum;
@@ -194,10 +198,24 @@ export class Matrix<E extends number = number> implements RowOperations {
         throw new Error("Has not yet been implemented!");
     }
     static isUpperTriangular: MatrixTypeGuard = (mtx: Matrix) => {
-        throw new Error("Has not yet been implemented!");
+        let i, j, x;
+        for (i = 1; i <= mtx.rowNum; ++i) {
+            for (j = 1; j < mtx.colNum; ++j) {
+                x = mtx.getEntry(i, j);
+                if (j >= i && x == 0 || j < i && x != 0) return false;
+            }
+        }
+        return true;
     }
     static isLowerTriangular: MatrixTypeGuard = (mtx: Matrix) => {
-        throw new Error("Has not yet been implemented!");
+        let i, j, x;
+        for (i = 1; i <= mtx.rowNum; ++i) {
+            for (j = 1; j < mtx.colNum; ++j) {
+                x = mtx.getEntry(i, j);
+                if (j < i && x == 0 || j >= i && x != 0) return false;
+            }
+        }
+        return true;
     }
     static isSymmetric: MatrixTypeGuard = (mtx: Matrix) => {
         throw new Error("Has not yet been implemented!");
