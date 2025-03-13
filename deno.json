@@ -6,7 +6,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "cli": "deno run src/main.ts"
+    "cli": "deno run src/main.ts",
+    "cpp": "g++ -shared -o"
   },
   "dependencies": {
     "chart.js": "^4.4.7"
