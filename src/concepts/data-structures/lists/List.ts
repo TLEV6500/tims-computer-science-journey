@@ -1,9 +1,9 @@
 export default interface List<E> {
     /**
-     * Inserts elem into the last element of the list.
+     * Adds elem into the last element of the list.
      * @param elem element to insert
      */
-    insert(elem: E): void;
+    add(elem: E): void;
 
     /**
      * Returns the integer in the *pos*-th position.
@@ -12,6 +12,8 @@ export default interface List<E> {
      * @throws InvalidPositionException
      */
     get(pos: number): E;
+
+    set(elem: E, pos: number): void;
 
     /**
      * Removes the first occurrence of elem from the list.

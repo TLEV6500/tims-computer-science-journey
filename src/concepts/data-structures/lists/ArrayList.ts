@@ -8,8 +8,12 @@ export default class ArrayList<E extends { toString(): string }> implements List
         this.#array = [];
     }
 
-    insert(elem: E): void {
+    add(elem: E): void {
         this.#array.push(elem);
+    }
+
+    set(elem: E, pos: number): void {
+        this.#array[pos] = elem;
     }
 
     get(pos: number): E {
@@ -37,7 +41,7 @@ export default class ArrayList<E extends { toString(): string }> implements List
 
     addAt(elem: E, pos: number): void {
         InvalidPositionException.throwIfNecessary([pos], [this.size + 1]);
-        if (pos == this.size + 1) return this.insert(elem);
+        if (pos == this.size + 1) return this.add(elem);
         const right = this.#array.splice(pos - 1, this.size - pos + 1, elem);
         this.#array = this.#array.concat(right);
     }
