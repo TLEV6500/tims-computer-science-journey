@@ -9,9 +9,7 @@
     "cli": "deno run src/main.ts",
     "cpp": "g++ -shared -o"
   },
-  "dependencies": {
-    "chart.js": "^4.4.7"
-  },
+  "dependencies": {},
   "devDependencies": {
     "typescript": "^5.5.3",
     "vite": "^5.4.1"
@@ -22,5 +20,8 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
+  },
+  "imports": {
+    "@types/plotly.js": "npm:@types/plotly.js@^2.35.4"
   }
 }
