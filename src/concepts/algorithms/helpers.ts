@@ -1,3 +1,5 @@
+import Comparable from "../utils/Comparable.ts";
+
 export class DataLogger<E> {
     #data: E[];
     constructor() {
@@ -67,4 +69,14 @@ export class For {
         this.#instance = undefined;
         return f;
     }
+}
+
+// export function compare<T>(a: T, b: T): number;
+export function compare<T>(a: T, b: T): number {
+    switch (typeof a) {
+        case "number": return (b as number) - a;
+        case "string": return a.localeCompare(b as string);
+    }
+    if (Comparable.isComparable(a)) return a.compare(b);
+    throw new Error("Object argument is not comparable");
 }
