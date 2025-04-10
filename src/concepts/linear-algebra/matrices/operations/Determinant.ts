@@ -67,4 +67,11 @@ export default class Determinant {
     static is2x2Mtx(mtx: Matrix) {
         return mtx.rowNum == 2 && mtx.colNum == 2;
     }
+
+    static hasZeroDeterminant(mtx: Matrix) {
+        // 1. When an entire row/column of a matrix is composed of zeroes
+        // 2. When two rows/columns are equal
+        // 3. When one row/column is a multiple of another
+        mtx;
+    }
 }
