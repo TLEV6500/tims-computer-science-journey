@@ -1,2 +1,4 @@
 ## Dev Notes
-- [regression-core-functionalities.md](regression-core-functionalities.md)
+
+- [GPT Query: How to Model Regression](gpt-regression-core-functionalities.md)
+-
