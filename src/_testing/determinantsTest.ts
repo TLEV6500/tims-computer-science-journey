@@ -1,12 +1,12 @@
 import Determinant from "../concepts/linear-algebra/matrices/operations/Determinant.ts";
-import { Matrix } from "../concepts/linear-algebra/matrices/Matrix.ts";
+import { Matrix } from "../concepts/linear-algebra/matrices/types/Matrix.ts";
 
 export default function () {
     let r = prompt("Enter r: ");
     let c = prompt("Enter c: ");
     const mtx = (r != null && c != null) ? new Matrix(Number(r), Number(c)) : null;
     if (!mtx) throw new Error(`Invalid inputs r(${r}) and c(${c})`);
-    
+
     mtx.fill((i, j) => {
         return Number(prompt(`(${i},${j}): `));
     })
