@@ -1,41 +1,41 @@
 #include "linearprobing_ht.hpp"
 
-template <typename K, typename V>
-LinearProbingHT<K,V>::LinearProbingHT(int size) {
-
+template <typename Key, typename Value>
+LinearProbingHT<Key, Value>::LinearProbingHT(int size)
+{
 }
 
-template <typename K, typename V>
-LinearProbingHT<K,V>::LinearProbingHT(int size, int a) {
-
+template <typename Key, typename Value>
+LinearProbingHT<Key, Value>::LinearProbingHT(int size, int a)
+{
 }
 
-template <typename K, typename V>
-void LinearProbingHT<K,V>::set(K key, V* value) {
-
+template <typename Key, typename Value>
+void LinearProbingHT<Key, Value>::set(Key key, Value *value)
+{
 }
 
-template <typename K, typename V>
-V LinearProbingHT<K,V>::get(K key) {
-
+template <typename Key, typename Value>
+Value LinearProbingHT<Key, Value>::get(Key key)
+{
 }
 
-template <typename K, typename V>
-void LinearProbingHT<K,V>::print() {
-
+template <typename Key, typename Value>
+void LinearProbingHT<Key, Value>::print()
+{
 }
 
-template <typename K, typename V>
-int LinearProbingHT<K,V>::hashCode(K key) {
-
+template <typename Key, typename Value>
+int LinearProbingHT<Key, Value>::hashCode(Key key)
+{
 }
 
-template <typename K, typename V>
-int LinearProbingHT<K,V>::polyHashCode(K key) {
-
+template <typename Key, typename Value>
+int LinearProbingHT<Key, Value>::polyHashCode(Key key)
+{
 }
 
-template <typename K, typename V>
-int LinearProbingHT<K,V>::compress(int code) {
-
+template <typename Key, typename Value>
+int LinearProbingHT<Key, Value>::compress(int code)
+{
 }

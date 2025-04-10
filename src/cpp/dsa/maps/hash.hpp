@@ -24,6 +24,7 @@ Hash<Key>::Hash(int prime) : prime(prime)
     super(prime);
 }
 
+// Polynomial string hashing
 template <>
 class Hash<std::string> : public HashBase
 {
@@ -36,5 +37,16 @@ public:
             hashVal = prime * hashVal + c;
         }
         return hashVal;
+    }
+};
+
+// 4-byte integer hashing
+template <>
+class Hash<int> : public HashBase
+{
+public:
+    int operator()(const int key)
+    {
+        return key;
     }
 };

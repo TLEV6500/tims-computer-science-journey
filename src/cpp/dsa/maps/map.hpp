@@ -1,10 +1,10 @@
 #pragma once
 
-template <typename K, typename V>
+template <typename Key, typename Value>
 class Map
 {
 public:
-    virtual void set(K key, V &value) = 0;
-    virtual V* get(K key) = 0;
+    virtual void set(Key key, Value value) = 0;
+    virtual Value get(Key key) = 0;
     virtual void print() = 0;
 };

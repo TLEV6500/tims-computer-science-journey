@@ -1,23 +1,23 @@
+#include "../lists/list.hpp"
 #ifndef SEPARATECHAININGHT
 #define SEPARATECHAININGHT
-#include "hashtable.hpp"
+#include "../maps/hashtable.hpp"
 
-template <typename K, typename V>
-class SeparateChainingHT : HashTable<K, V>
+template <typename Key, typename Value, typename Hash>
+class SeparateChainingHT : public HashTable<Key, Value, Hash>
 {
 private:
-    V **array;
-    int a;
-
-    int hashCode(K key);
+    List<Value> **array;
+    int size;
     int compress(int code);
 
 public:
-    SeparateChainingHT(int size);
-    SeparateChainingHT(int size, int a);
-    void set(K key, V *value);
-    V get(K key);
-    void print();
+    SeparateChainingHT(int capacity, Hash hashCode);
+    ~SeparateChainingHT();
+    void set(Key key, Value value) override;
+    Value get(Key key) override;
+    void print() override;
+    Key getKey(Value value) override;
 };
 
 #include "separatechaining_ht.tpp"

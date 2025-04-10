@@ -1,23 +1,23 @@
 #pragma once
-#include <cstdlib>
 #include "hashtable.hpp"
+#include <cstdlib>
 
-template <typename K, typename V>
-class LinearProbingHT : protected HashTable<V>
+template <typename Key, typename Value>
+class LinearProbingHT : protected HashTable<Value>
 {
 private:
-    V** array;
+    Value **array;
     int a;
 
-    int hashCode(K key);
-    int polyHashCode(K key);
+    int hashCode(Key key);
+    int polyHashCode(Key key);
     int compress(int code);
 
 public:
     LinearProbingHT(int size);
     LinearProbingHT(int size, int a);
-    void set(K key, V* value);
-    V get(K key);
+    void set(Key key, Value *value);
+    Value get(Key key);
     void print();
 };
 

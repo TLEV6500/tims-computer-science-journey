@@ -1,43 +1,60 @@
 #pragma once
+#include "arraylist.hpp"
+#include <cstdlib>
 
-#ifndef SEPARATECHAININGHT
-#include "separatechaining_ht.hpp"
-#endif
 
-template <typename K, typename V>
-void SeparateChainingHT<K, V>::print()
+template <typename Key, typename Value, typename Hash>
+SeparateChainingHT<Key, Value, Hash>::SeparateChainingHT(int capacity, Hash hashCode) : size(0)
+{
+    super(capacity, hashCode);
+    array = (List<Value> **)calloc(capacity, sizeof(List<Value> *));
+}
+
+template <typename Key, typename Value, typename Hash>
+SeparateChainingHT<Key, Value, Hash>::~SeparateChainingHT()
+{
+    free(array);
+}
+
+template <typename Key, typename Value, typename Hash>
+void SeparateChainingHT<Key, Value, Hash>::print()
 {
 }
 
-template <typename K, typename V>
-int SeparateChainingHT<K, V>::hashCode(K key)
+template <typename Key, typename Value, typename Hash>
+int SeparateChainingHT<Key, Value, Hash>::compress(int code)
 {
-    return 0;
+    return code % capacity;
 }
 
-template <typename K, typename V>
-int SeparateChainingHT<K, V>::compress(int code)
+template <typename Key, typename Value, typename Hash>
+void SeparateChainingHT<Key, Value, Hash>::set(Key key, Value value)
 {
-    return 0;
+    int hash = this->hash(key);
+    if (!array[hash])
+        array[hash] = new ArrayList();
+    array[hash]->addLast(value);
+    ++size;
 }
 
-template <typename K, typename V>
-SeparateChainingHT<K, V>::SeparateChainingHT(int size)
+template <typename Key, typename Value, typename Hash>
+Value SeparateChainingHT<Key, Value, Hash>::get(Key key)
 {
+    int hash = this->hash(key);
+    Value val = ErrorValue<Value>();
+    if (!array[hash])
+        return val;
+    array[hash]->forEach(
+        [&val](Value x, int i, int size, Value *arr) ->
+        {
+            if (getKey(x) == key)
+                val = x;
+        });
+    return val;
 }
 
-template <typename K, typename V>
-SeparateChainingHT<K, V>::SeparateChainingHT(int size, int a)
+template <typename Key, typename Value, typename Hash>
+Key SeparateChainingHT<Key, Value, Hash>::getKey(Value value)
 {
-}
-
-template <typename K, typename V>
-void SeparateChainingHT<K, V>::set(K key, V *value)
-{
-}
-
-template <typename K, typename V>
-V SeparateChainingHT<K, V>::get(K key)
-{
-    return V();
+    return value;
 }

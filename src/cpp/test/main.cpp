@@ -1,15 +1,12 @@
-#include <iostream>
-#include "linearprobing_ht.hpp"
-
-struct node {
-    int elem;
-};
+#include "../dsa/lists/list.hpp"
+#include "../dsa/lists/arraylist.hpp"
 
 int main(int argc, char const *argv[])
 {
-    LinearProbingHT<std::string, node>* ht = new LinearProbingHT<std::string, node>(13);
-    ht->get("hello");
-    std::cout << "Hello!!" << std::endl;
-    
+    List<int>* list = new ArrayList<int>();
+    for (int i = 0; i < 5; ++i) {
+		list->addLast(i+i*5+1);
+	}
+	list->print();
     return 0;
 }
