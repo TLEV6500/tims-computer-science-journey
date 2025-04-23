@@ -1,8 +1,8 @@
 import type { UserConfig } from "vite";
 
 export default {
-	root: "./",
-	base: "/discrete-mathematics/",
+	root: "./app",
+	base: "./src/app/public",
 	build: {
 		outDir: "./public",
 		emptyOutDir: true,

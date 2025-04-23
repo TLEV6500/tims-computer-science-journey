@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "type": "module",
   "tasks": {
-    "dev": "vite",
+    "dev": "deno --allow-env --allow-sys --allow-run --allow-write --allow-net --allow-read npm:nodemon --watch ./src/app/views/MatrixRowOperations --ext ts --exec \"deno -A npm:esbuild --bundle ./src/app/views/MatrixRowOperations/index.ts --outfile=./src/app/public/matrix.js --minify && deno serve -A ./src/app/server.ts\"",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "cli": "deno run src/main.ts",
@@ -11,8 +11,7 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "typescript": "^5.5.3",
-    "vite": "^5.4.1"
+    "typescript": "^5.5.3"
   },
   "compilerOptions": {
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
@@ -22,6 +21,10 @@
     "noFallthroughCasesInSwitch": true
   },
   "imports": {
-    "@types/plotly.js": "npm:@types/plotly.js@^2.35.4"
+    "@oak/oak": "jsr:@oak/oak@^17.1.4",
+    "@types/plotly.js": "npm:@types/plotly.js@^2.35.4",
+    "esbuild": "npm:esbuild@^0.25.2",
+    "eta": "npm:eta@^3.5.0",
+    "nodemon": "npm:nodemon@^3.1.9"
   }
 }
