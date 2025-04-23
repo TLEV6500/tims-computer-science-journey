@@ -10,4 +10,6 @@ struct base_node {
 	}
 protected:
 	base_node* links[];
+	// Returns the new parent of the children of the extracted node
+	virtual base_node* extractNode(base_node* n) = 0;
 };
