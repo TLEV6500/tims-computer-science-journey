@@ -1,14 +1,7 @@
-import { RemoveFirstParameter } from "../../../utils/types.ts";
-import Determinant from "../operations/Determinant.ts";
-import { ElementaryMatrixRowOperations } from "../operations/ElementaryMatrixRowOperations.ts";
+import { RowOperations } from "../operations/ElementaryMatrixRowOperations.ts";
 
 type MatrixTypeGuard = (mtx: Matrix) => boolean;
 
-type RowOperations = {
-    [Key in keyof ElementaryMatrixRowOperations]: RemoveFirstParameter<ElementaryMatrixRowOperations[Key]>;
-}
-
-type MatrixEntryProducer<E extends number> = (r: number, c: number) => E;
 type RandomMatrixOptions = {
     matrixSize: { min: number, max: number, isSquare: boolean },
     entries: { min: number, max: number, decimals: number }
@@ -20,6 +13,14 @@ export class Matrix<E extends number = number> implements RowOperations {
     // #paddingPerColumn: number[] = [];
     readonly rowNum: number;
     readonly colNum: number;
+
+    protected set maxDigits(d: number) {
+        this.#maxDigits = d;
+    }
+
+    protected get maxDigits() {
+        return this.#maxDigits;
+    }
 
     constructor(rowNum: number, colNum: number);
     constructor(randomIndicator: "RANDOM", randomOptions: RandomMatrixOptions);
@@ -47,115 +48,6 @@ export class Matrix<E extends number = number> implements RowOperations {
             this.mtx = new Array<E[]>(this.rowNum).fill(null as unknown as E[]);
             this.mtx.forEach((_v, i, r) => r[i] = new Array<E>(colNumOrRandOpts as number).fill(0 as E));
         }
-    }
-
-    fill(...values: E[]): void;
-    fill(valProducer: MatrixEntryProducer<E>): void;
-    fill(firstValOrValProducer: E | MatrixEntryProducer<E>, ...values: E[]) {
-        let valProducer: MatrixEntryProducer<E>;
-        if (!(firstValOrValProducer instanceof Function)) {
-            values.unshift(firstValOrValProducer);
-            valProducer = (r, c) => {
-                const ii = c + this.rowNum * (r - 1) - 1;
-                return values[values.length - 1 < ii ? (values.length - 1) : ii]
-            }
-        } else valProducer = firstValOrValProducer;
-        if (values.length == 0) values.push(0 as E);
-        for (let i = 1; i <= this.rowNum; ++i) {
-            for (let j = 1; j <= this.colNum; ++j) {
-                this.setEntry(valProducer(i, j), i, j);
-            }
-        }
-    }
-
-    areInvalidPositions(row: number, col: number) {
-        return row < 1 || col < 1 || row > this.rowNum || col > this.colNum
-    }
-
-    getEntry(row: number, col: number) {
-        if (this.areInvalidPositions(row, col)) throw new Error(`Invalid Positions: (${row},${col})`);
-        return this.mtx[row - 1][col - 1];
-    }
-    setEntry(elem: E, row: number, col: number) {
-        if (this.areInvalidPositions(row, col)) throw new Error(`Invalid Positions: (${row},${col})`);
-        this.mtx[row - 1][col - 1] = elem;
-        const l = elem.toString().length;
-        if (l > this.#maxDigits) this.#maxDigits = l;
-    }
-    getRow(row: number) {
-        if (this.areInvalidPositions(row, 1)) throw new Error("Invalid Row Number " + row);
-        return this.mtx[row - 1];
-    }
-    setRow(row: E[], rowNum: number) {
-        if (this.areInvalidPositions(rowNum, 1)) throw new Error("Invalid Row Number");
-        if (row.length != this.colNum) throw new Error(`New row size (${row.length}) does not equal matrix row size (${this.rowNum}).`);
-        this.mtx[rowNum - 1] = row;
-    }
-
-    swap(...args: Parameters<RowOperations["swap"]>): void {
-        ElementaryMatrixRowOperations.swap(this, ...args);
-    }
-
-    scalarMultiply(...args: Parameters<RowOperations["scalarMultiply"]>): void {
-        ElementaryMatrixRowOperations.scalarMultiply(this, ...args);
-    }
-
-    rowSum(...args: Parameters<RowOperations["rowSum"]>): void {
-        ElementaryMatrixRowOperations.rowSum(this, ...args);
-    }
-
-    toString() {
-        let str = "\n";
-        const r = this.rowNum, c = this.colNum;
-        for (let i = 1, j = 1; i <= r; ++i) {
-            if (this.rowNum == 1) str += "[ ";
-            else if (i == 1) str += "┌ ";
-            else if (i != r) str += "\n│ ";
-            else str += "\n└ ";
-            for (j = 1; j <= c; ++j) {
-                str += (this.getEntry(i, j) ?? 0).toString().padEnd(this.#maxDigits, " ") + " ";
-            }
-            if (this.rowNum == 1) str += "]";
-            else if (i == 1) str += "┐"
-            else if (i != r) str += "│";
-            else if (i == r) str += "┘";
-        }
-        return str + "\n";
-    }
-
-    toArray() {
-        return JSON.parse(JSON.stringify(this.mtx)) as E[][];
-    }
-
-    print() {
-        console.log(this.toString());
-    }
-
-    submatrix(deleteRow: number, deleteCol: number): Matrix {
-        const sub = new Matrix(this.rowNum - 1, this.colNum - 1);
-        let i1, i2, j1, j2;
-        for (i1 = i2 = j1 = j2 = 1; i1 <= this.rowNum; ++i1) {
-            if (i1 != deleteRow) {
-                for (j1 = 1, j2 = 1; j1 <= this.colNum; ++j1) {
-                    if (j1 != deleteCol) {
-                        sub.setEntry(this.getEntry(i1, j1), i2, j2);
-                        ++j2;
-                    }
-                }
-                ++i2
-            }
-        }
-        return sub;
-    }
-
-    matrixOfMinors() {
-        const mtxMin = new Matrix(this.rowNum, this.colNum);
-        for (let i = 1, j; i <= this.rowNum; ++i) {
-            for (j = 1; j <= this.colNum; ++j) {
-                mtxMin.setEntry(Determinant.minor(this, i, j), i, j)
-            }
-        }
-        return mtxMin;
     }
 
     static isSingleton: MatrixTypeGuard = (mtx: Matrix) => {
@@ -223,6 +115,4 @@ export class Matrix<E extends number = number> implements RowOperations {
     static isOrthogonal: MatrixTypeGuard = (mtx: Matrix) => {
         throw new Error("Has not yet been implemented!");
     }
-
-
 }

@@ -1,6 +1,11 @@
-import { Matrix } from "../types/Matrix.ts";
 import Parser from "../../../utils/Parser.ts";
 import { isNo, isYes } from "../../../utils/validateStrings.ts";
+import { RemoveFirstParameter } from "../../../utils/types.ts";
+import { Matrix } from "../mod.ts";
+
+export type RowOperations = {
+    [Key in keyof ElementaryMatrixRowOperations]: RemoveFirstParameter<ElementaryMatrixRowOperations[Key]>;
+}
 
 const menu = "\nElementary Row Operations".concat(
     "\n's' - Swap two rows",
