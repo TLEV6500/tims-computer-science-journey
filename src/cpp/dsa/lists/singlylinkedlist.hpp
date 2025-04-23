@@ -9,11 +9,10 @@ class SinglyLinkedList : LinkedList<E> {
 		node* next() {
 			return this->links[0];
 		}
+		void next(node* n) {
+			this->links[0] = n;
+		}
 	};
-	
-	node* createNode(E elem) {
-		
-	}
 
 	node* insertBetween(E elem, node* pred, node* succ) {
 
