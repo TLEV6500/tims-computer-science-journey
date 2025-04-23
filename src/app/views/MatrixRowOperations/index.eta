@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Matrix Row Operations</title>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <script>
+      MathJax = {
+        loader: { load: ["input/asciimath", "output/chtml", "ui/menu"] },
+      };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="matrix.js" type="text/javascript" defer></script>
+  </head>
+  <body>
+    <div id="mtx_canvas">
+      <div id="matrix_body" user-select="none">`[[1,2],[3,4],[5,6]]`</div>
+    </div>
+    <div id="canvas_operations">
+      <form id="create_new_matrix">
+        <p>New Matrix</p>
+        <label for="newMtxRows">Rows</label>
+        <input type="number" name="newMtxRows" id="new_mtx_rows" />
+        <label for="newMtxCols">Cols</label>
+        <input type="number" name="newMtxCols" id="new_mtx_cols" />
+        <input
+          type="checkbox"
+          name="newMtxIsRandom"
+          id="new_mtx_is_random"
+          checked
+        />
+        <label for="newMtxIsRandom">Is random matrix</label>
+        <button type="submit">Replace!</button>
+      </form>
+    </div>
+    <div id="row_operations">
+      <span>
+        <label for="multiplyRow">Scalar Multiply Row</label>
+        <select name="multiplyRow" id="multiply_row"></select>
+        <label for="scalarMul">By Scalar</label>
+        <input type="number" name="scalarMul" id="scalar_mul" />
+      </span>
+      <span>
+        <label for="addRowA">Add Row</label>
+        <select name="addRowA" id="add_row_a"></select>
+        <label for="addToRowB">To Row</label>
+        <select name="addToRowB" id="add_to_row_b"></select>
+      </span>
+    </div>
+    <div id="keyboard_presses"></div>
+  </body>
+</html>

@@ -1,0 +1,72 @@
+:root {
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Calibri", Arial, Helvetica, sans-serif;
+  display: grid;
+  height: 100vh;
+  grid-template-rows: 4fr 1fr;
+  grid-template-columns: 4fr 1fr;
+  & > * {
+    padding: 2rem;
+  }
+}
+
+button {
+  background-color: darkslategray;
+  color: beige;
+  border: 1px solid beige;
+  border-radius: 8px;
+  padding: 8px;
+
+  &:hover {
+    background-color: beige;
+    color: darkslategray;
+    border-color: darkslategray;
+  }
+}
+
+input[type="number"],
+input[type="text"] {
+  padding: 6px;
+}
+
+#mtx_canvas {
+  background-color: beige;
+  color: darkslategray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+}
+
+#canvas_operations,
+#row_operations {
+  background-color: darkslategray;
+  color: beige;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+#canvas_operations {
+  & > * {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+}
+
+#row_operations {
+}
+
+#keyboard_presses {
+  background-color: beige;
+  color: darkslategray;
+}
